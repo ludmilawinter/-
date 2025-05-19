@@ -22,14 +22,16 @@ abstract class Instrument {
 // Средний уровень: Струнные, Духовые, Ударные — подклассы
 abstract class StringInstrument extends Instrument {
     protected int numberOfStrings;
+    protected String stringMaterial; // Добавленное поле
 
-    public StringInstrument(String brand, String material, int numberOfStrings) {
+    public StringInstrument(String brand, String material, int numberOfStrings, String stringMaterial) {
         super(brand, material);
         this.numberOfStrings = numberOfStrings;
+        this.stringMaterial = stringMaterial;
     }
 
     public void pluckString() {
-        System.out.println("Игрок тянет струну.");
+        System.out.println("Игрок тянет струну из материала: " + stringMaterial);
     }
 
     @Override
@@ -39,7 +41,7 @@ abstract class StringInstrument extends Instrument {
 }
 
 abstract class WindInstrument extends Instrument {
-    protected String key; 
+    protected String key;
 
     public WindInstrument(String brand, String material, String key) {
         super(brand, material);
@@ -57,7 +59,7 @@ abstract class WindInstrument extends Instrument {
 }
 
 abstract class PercussionInstrument extends Instrument {
-    protected String percussionType; // например, "барабан"
+    protected String percussionType;
 
     public PercussionInstrument(String brand, String material, String percussionType) {
         super(brand, material);
@@ -74,15 +76,15 @@ abstract class PercussionInstrument extends Instrument {
     public abstract String getInstrumentType();
 }
 
-// Низкий уровень: Конкретные инструменты, реализующие абстрактные методы
+// Низкий уровень: Конкретные инструменты
 class Guitar extends StringInstrument {
-    public Guitar(String brand, String material, int numberOfStrings) {
-        super(brand, material, numberOfStrings);
+    public Guitar(String brand, String material, int numberOfStrings, String stringMaterial) {
+        super(brand, material, numberOfStrings, stringMaterial);
     }
 
     @Override
     public void tune() {
-        System.out.println("Настраиваю гитару, натяжение струн.");
+        System.out.println("Настраиваю гитару, натяжение струн из " + stringMaterial + ".");
     }
 
     @Override
@@ -123,17 +125,18 @@ class Drum extends PercussionInstrument {
     }
 }
 
-public class Main { 
-    public static void main(String[] args) { 
+public class Main {
+    public static void main(String[] args) {
         Instrument[] instruments = new Instrument[3];
 
-        instruments[0] = new Guitar("Fender", "Дерево", 6); 
-        instruments[1] = new Flute("Yamaha", "Металл", "До"); 
-        instruments[2] = new Drum("Yamaha", "Дерево", "Барабан"); 
+        instruments[0] = new Guitar("Fender", "Дерево", 6, "Нейлон");
+        instruments[1] = new Flute("Yamaha", "Металл", "До");
+        instruments[2] = new Drum("Yamaha", "Дерево", "Барабан");
 
         for (Instrument instrument : instruments) {
             instrument.play();
             instrument.tune();
+
             if (instrument instanceof StringInstrument) {
                 ((StringInstrument) instrument).pluckString();
             } else if (instrument instanceof WindInstrument) {
@@ -141,7 +144,8 @@ public class Main {
             } else if (instrument instanceof PercussionInstrument) {
                 ((PercussionInstrument) instrument).strike();
             }
-            System.out.println(); 
+
+            System.out.println();
         }
-    } 
+    }
 }
