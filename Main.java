@@ -39,7 +39,7 @@ abstract class StringInstrument extends Instrument {
 }
 
 abstract class WindInstrument extends Instrument {
-    protected String key; // например, "До", "Ре" и т.п.
+    protected String key; 
 
     public WindInstrument(String brand, String material, String key) {
         super(brand, material);
@@ -57,7 +57,7 @@ abstract class WindInstrument extends Instrument {
 }
 
 abstract class PercussionInstrument extends Instrument {
-    protected String percussionType; // например, "барабан", "каспий"
+    protected String percussionType; // например, "барабан"
 
     public PercussionInstrument(String brand, String material, String percussionType) {
         super(brand, material);
@@ -123,29 +123,25 @@ class Drum extends PercussionInstrument {
     }
 }
 
-// Основной класс для тестирования
-// Основной класс для тестирования
-public class Main {
-    public static void main(String[] args) {
-        // Создаем объекты конкретных инструментов
-        Guitar guitar = new Guitar("Fender", "Дерево", 6);
-        Flute flute = new Flute("Yamaha", "Металл", "До");
-        Drum drum = new Drum("Yamaha", "Дерево", "Барабан");
+public class Main { 
+    public static void main(String[] args) { 
+        Instrument[] instruments = new Instrument[3];
 
-        // Используем методы
-        guitar.play();
+        instruments[0] = new Guitar("Fender", "Дерево", 6); 
+        instruments[1] = new Flute("Yamaha", "Металл", "До"); 
+        instruments[2] = new Drum("Yamaha", "Дерево", "Барабан"); 
 
-        guitar.tune();
-        guitar.pluckString();
-        System.out.println();
-
-        flute.play();
-        flute.tune();
-        flute.blow();
-        System.out.println();
-
-        drum.play();
-        drum.tune();
-        drum.strike();
-    }
+        for (Instrument instrument : instruments) {
+            instrument.play();
+            instrument.tune();
+            if (instrument instanceof StringInstrument) {
+                ((StringInstrument) instrument).pluckString();
+            } else if (instrument instanceof WindInstrument) {
+                ((WindInstrument) instrument).blow();
+            } else if (instrument instanceof PercussionInstrument) {
+                ((PercussionInstrument) instrument).strike();
+            }
+            System.out.println(); 
+        }
+    } 
 }
